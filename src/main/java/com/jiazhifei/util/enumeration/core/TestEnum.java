@@ -1,4 +1,4 @@
-package com.jkf.util.enumeration.core;
+package com.jiazhifei.util.enumeration.core;
 
 /**
  * @author

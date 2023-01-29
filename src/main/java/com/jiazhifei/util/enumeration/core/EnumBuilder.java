@@ -1,4 +1,4 @@
-package com.jkf.util.enumeration.core;
+package com.jiazhifei.util.enumeration.core;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -18,17 +18,57 @@ public class EnumBuilder {
      */
     private KeyTypeEnum keyType;
 
-    public static StringEnumBuilder stringBuilder() {
-        return new StringEnumBuilder();
+    /**
+     * 枚举类的名称
+     */
+    private String className;
+
+    /**
+     * 枚举类的说明
+     */
+    private String classDesc;
+
+    /**
+     * 作者
+     */
+    private String author;
+
+    public EnumBuilder author(String author) {
+        this.author = author;
+        return this;
     }
 
-    public static IntegerEnumBuilder integerBuilder() {
-        return new IntegerEnumBuilder();
+
+    /**
+     * 创建String类型的枚举
+     *
+     * @param className 枚举类的名称，例如：EnvironmentEnum
+     * @param classDesc 枚举类的说明，例如：环境枚举
+     */
+    public static StringEnumBuilder stringBuilder(String className, String classDesc) {
+        return new StringEnumBuilder(className, classDesc);
     }
 
-    public static LongEnumBuilder longBuilder() {
-        return new LongEnumBuilder();
+    /**
+     * 创建Integer类型的枚举
+     *
+     * @param className 枚举类的名称，例如：EnvironmentEnum
+     * @param classDesc 枚举类的说明，例如：环境枚举
+     */
+    public static IntegerEnumBuilder integerBuilder(String className, String classDesc) {
+        return new IntegerEnumBuilder(className, classDesc);
     }
+
+    /**
+     * 创建Long类型的枚举
+     *
+     * @param className 枚举类的名称，例如：EnvironmentEnum
+     * @param classDesc 枚举类的说明，例如：环境枚举
+     */
+    public static LongEnumBuilder longBuilder(String className, String classDesc) {
+        return new LongEnumBuilder(className, classDesc);
+    }
+
 
     public void enumConfig(String key, Object code, String name, String desc) {
         EnumConfig enumConfig = new EnumConfig(key, code, name, desc);
@@ -36,12 +76,12 @@ public class EnumBuilder {
         configs.add(enumConfig);
     }
 
-    public void print(String className, String desc) {
-        print(className, desc, "");
-    }
 
-    public void print(String className, String desc, String author) {
-        validateAllConfig(className, desc);
+    public void print() {
+        validateAllConfig();
+        if (isEmpty(author)) {
+            author = "";
+        }
         StringBuilder enumSb = new StringBuilder();
         int size = configs.size();
         //组装枚举项
@@ -56,7 +96,7 @@ public class EnumBuilder {
         }
         //组装枚举类
         String classInfo = EnumTemplateConstant.ENUM_TEMPLATE
-                .replaceAll("\\$\\{desc\\}", desc)
+                .replaceAll("\\$\\{desc\\}", classDesc)
                 .replaceAll("\\$\\{author\\}", author)
                 .replaceAll("\\$\\{dateTime\\}", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()))
                 .replaceAll("\\$\\{className\\}", className)
@@ -71,15 +111,17 @@ public class EnumBuilder {
     }
 
 
-    public EnumBuilder(KeyTypeEnum keyType) {
+    public EnumBuilder(KeyTypeEnum keyType, String className, String classDesc) {
         this.keyType = keyType;
+        this.classDesc = classDesc;
+        this.className = className;
     }
 
-    private void validateAllConfig(String className, String desc) {
+    private void validateAllConfig() {
         if (isEmpty(className)) {
             throw new IllegalArgumentException("枚举类的类名必填");
         }
-        if (isEmpty(desc)) {
+        if (isEmpty(classDesc)) {
             throw new IllegalArgumentException("枚举类[" + className + "]的描述必填");
         }
         if (configs.isEmpty()) {
@@ -126,8 +168,8 @@ public class EnumBuilder {
      */
     public static class StringEnumBuilder extends EnumBuilder {
 
-        public StringEnumBuilder() {
-            super(KeyTypeEnum.STRING);
+        public StringEnumBuilder(String className, String classDesc) {
+            super(KeyTypeEnum.STRING, className, classDesc);
         }
 
         /**
@@ -149,8 +191,8 @@ public class EnumBuilder {
      */
     public static class IntegerEnumBuilder extends EnumBuilder {
 
-        public IntegerEnumBuilder() {
-            super(KeyTypeEnum.INTEGER);
+        public IntegerEnumBuilder(String className, String classDesc) {
+            super(KeyTypeEnum.INTEGER, className, classDesc);
         }
 
         /**
@@ -162,7 +204,7 @@ public class EnumBuilder {
         }
 
         public IntegerEnumBuilder enumConfig(String key, Integer code, String name) {
-            return enumConfig(key, code, name,"");
+            return enumConfig(key, code, name, "");
         }
     }
 
@@ -171,8 +213,8 @@ public class EnumBuilder {
      */
     public static class LongEnumBuilder extends EnumBuilder {
 
-        public LongEnumBuilder() {
-            super(KeyTypeEnum.LONG);
+        public LongEnumBuilder(String className, String classDesc) {
+            super(KeyTypeEnum.LONG, className, classDesc);
         }
 
         /**
@@ -198,7 +240,7 @@ public class EnumBuilder {
          * @param name = 成功
          */
         public LongEnumBuilder enumConfig(String key, Long code, String name) {
-            return enumConfig(key, code, name,"");
+            return enumConfig(key, code, name, "");
         }
     }
 

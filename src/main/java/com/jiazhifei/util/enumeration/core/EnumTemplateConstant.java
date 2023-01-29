@@ -1,4 +1,4 @@
-package com.jkf.util.enumeration.core;
+package com.jiazhifei.util.enumeration.core;
 
 /**
  * @author jkf
@@ -28,10 +28,10 @@ public class EnumTemplateConstant {
                     "\n" +
                     "   /**\n" +
                     "     * main自动生成更新字段的comment信息，当然如果需要的话\n" +
-                    "     * 例如：tableName=user_info\n" +
-                    "     * columnInfo = name varchar(32) not null default ''\n" +
                     "     */\n" +
                     "    public static void main(String[] args) {\n" +
+                    "        //例如：tableName=user_info，columnInfo = name varchar(32) not null default ''\n" +
+                    "        //生成sql=alter table user_info modify column name varchar(32) not null default '' comment \"枚举变量的name\";\n" +
                     "        String sql = mkSql(\"\", \"\");\n" +
                     "        System.out.println(sql);\n" +
                     "    }\n" +
@@ -54,8 +54,7 @@ public class EnumTemplateConstant {
                     "     * @return true=存在\n" +
                     "     */\n" +
                     "    public static boolean isExist(${keyType} code) {\n" +
-                    "        ${className} codeEnum = of(code);\n" +
-                    "        return codeEnum != null;\n" +
+                    "        return of(code) != null;\n" +
                     "    }\n" +
                     "\n" +
                     "    /**\n" +
@@ -88,6 +87,9 @@ public class EnumTemplateConstant {
                     "        return desc;\n" +
                     "    }\n" +
                     "\n" +
+                    "    /**\n" +
+                    "     * 生成sql\n" +
+                    "     */\n" +
                     "    private static String mkSql(String tableName, String columnInfo) {\n" +
                     "        StringBuilder sb = new StringBuilder();\n" +
                     "        for (${className} codeEnum : ${className}.values()) {\n" +
@@ -96,7 +98,7 @@ public class EnumTemplateConstant {
                     "                sb.append(\"(\" + codeEnum.getDesc() + \")\");\n" +
                     "            }\n" +
                     "        }\n" +
-                    "        return \"alter table \" + tableName + \" modify \" + columnInfo + \" comment \\\" ${desc}:\" + sb.substring(1) + \"\\\";\";\n" +
+                    "        return \"alter table \" + tableName + \" modify column \" + columnInfo + \" comment \\\"${desc}:\" + sb.substring(1) + \"\\\";\";\n" +
                     "    }\n" +
                     "\n" +
                     "}";

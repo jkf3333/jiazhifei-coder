@@ -1,6 +1,6 @@
-package com.jkf.util.enumeration;
+package com.jiazhifei.util.enumeration;
 
-import com.jkf.util.enumeration.core.EnumBuilder;
+import com.jiazhifei.util.enumeration.core.EnumBuilder;
 
 /**
  * @author jkf
@@ -9,8 +9,8 @@ import com.jkf.util.enumeration.core.EnumBuilder;
  */
 public class EnumExample {
     public static void main(String[] args) {
-        stringExample();
-//        integerExample();
+//        stringExample();
+        integerExample();
 //        longExample();
     }
 
@@ -18,25 +18,26 @@ public class EnumExample {
      * 生成字符串枚举类
      */
     private static void stringExample() {
-        EnumBuilder.stringBuilder()
+        EnumBuilder.stringBuilder("EnvironmentEnum", "环境枚举")
                 .enumConfig("test", "测试", "测试环境")
                 .enumConfig("dev", "开发环境")
-                .print("EnvironmentEnum", "环境枚举", "jkf");
+                .print();
 
     }
 
     public static void integerExample() {
-        EnumBuilder.integerBuilder()
+        EnumBuilder.integerBuilder("StatusEnum", "用户状态枚举")
                 .enumConfig("NORMAL", 1, "正常")
                 .enumConfig("DELETE", -1, "删除")
-                .print("StatusEnum", "用户状态枚举");
+                .author("jkf")
+                .print();
     }
 
     public static void longExample() {
-        EnumBuilder.longBuilder()
+        EnumBuilder.longBuilder("ErrorCodeEnum", "错误码")
                 .enumConfig("OK", 1000L, "成功")
                 .enumConfig("SYSTEM_ERROR", 5000L, "系统异常")
                 .enumConfig("NETWORK_ERROR", 3000L, "网络异常")
-                .print("ErrorCodeEnum", "错误码");
+                .print();
     }
 }
