@@ -15,9 +15,9 @@ public class EnumTemplateConstant {
      */
     public static final String ENUM_TEMPLATE =
             "/**\n" +
-                    " * @author ${author}\n" +
-                    " * @date ${dateTime}\n" +
-                    " * @description ${desc}\n" +
+                    " * ${authorAnnotation} ${author}\n" +
+                    " * ${datetimeAnnotation} ${dateTime}\n" +
+                    " * ${descriptionAnnotation} ${desc}\n" +
                     " */\n" +
                     "public enum ${className} {\n" +
                     "${enumList}\n" +
@@ -26,20 +26,18 @@ public class EnumTemplateConstant {
                     "    private final String name;\n" +
                     "    private final String desc;\n" +
                     "\n" +
-                    "   /**\n" +
-                    "     * main自动生成更新字段的comment信息，当然如果需要的话\n" +
+                    "    /**\n" +
+                    "     * 输出枚举类的格式化信息\n" +
                     "     */\n" +
                     "    public static void main(String[] args) {\n" +
-                    "        //例如：tableName=user_info，columnInfo = name varchar(32) not null default ''\n" +
-                    "        //生成sql=alter table user_info modify column name varchar(32) not null default '' comment \"枚举变量的name\";\n" +
-                    "        String sql = mkSql(\"\", \"\");\n" +
-                    "        System.out.println(sql);\n" +
+                    "        //输出枚举类的格式化信息\n" +
+                    "        System.out.println(toFormatString());\n" +
                     "    }\n" +
                     "\n" +
                     "    /**\n" +
                     "     * 根据code获取枚举\n" +
                     "     */\n" +
-                    "    public static ${className} of(${keyType} code) {\n" +
+                    "    public static ${className} parse(${keyType} code) {\n" +
                     "        for (${className} codeEnum : ${className}.values()) {\n" +
                     "            if (codeEnum.getCode().equals(code)) {\n" +
                     "                return codeEnum;\n" +
@@ -54,14 +52,14 @@ public class EnumTemplateConstant {
                     "     * @return true=存在\n" +
                     "     */\n" +
                     "    public static boolean isExist(${keyType} code) {\n" +
-                    "        return of(code) != null;\n" +
+                    "        return parse(code) != null;\n" +
                     "    }\n" +
                     "\n" +
                     "    /**\n" +
                     "     * 根据code获取name\n" +
                     "     */\n" +
                     "    public static String format(${keyType} code) {\n" +
-                    "        ${className} codeEnum = of(code);\n" +
+                    "        ${className} codeEnum = parse(code);\n" +
                     "        if (codeEnum == null) {\n" +
                     "            return \"\";\n" +
                     "        } else {\n" +
@@ -88,9 +86,11 @@ public class EnumTemplateConstant {
                     "    }\n" +
                     "\n" +
                     "    /**\n" +
-                    "     * 生成sql\n" +
+                    "     * 枚举类信息格式化\n" +
+                    "     *\n" +
+                    "     * @return 枚举类格式化后的信息\n" +
                     "     */\n" +
-                    "    private static String mkSql(String tableName, String columnInfo) {\n" +
+                    "    public static String toFormatString() {\n" +
                     "        StringBuilder sb = new StringBuilder();\n" +
                     "        for (${className} codeEnum : ${className}.values()) {\n" +
                     "            sb.append(\",\" + codeEnum.getCode() + \"=\" + codeEnum.getName());\n" +
@@ -98,7 +98,7 @@ public class EnumTemplateConstant {
                     "                sb.append(\"(\" + codeEnum.getDesc() + \")\");\n" +
                     "            }\n" +
                     "        }\n" +
-                    "        return \"alter table \" + tableName + \" modify column \" + columnInfo + \" comment \\\"${desc}:\" + sb.substring(1) + \"\\\";\";\n" +
+                    "        return \"${desc}:\" + sb.substring(1);\n" +
                     "    }\n" +
                     "\n" +
                     "}";

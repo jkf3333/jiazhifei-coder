@@ -1,5 +1,9 @@
 package com.jiazhifei.util.enumeration.core;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -13,6 +17,7 @@ public class EnumBuilder {
      * 枚举项
      */
     private List<EnumConfig> configs = new ArrayList<>();
+
     /**
      * 枚举项的类型
      */
@@ -24,17 +29,60 @@ public class EnumBuilder {
     private String className;
 
     /**
-     * 枚举类的说明
+     * 日期注释，默认@datetime
      */
-    private String classDesc;
+    private String datetimeAnnotation = "@datetime";
+
+    /**
+     * 作者注释，默认@author
+     */
+    private String authorAnnotation = "@author";
 
     /**
      * 作者
      */
-    private String author;
+    private String author = "";
 
+    /**
+     * 描述的注释，默认@description
+     */
+    private String descAnnotation = "@description";
+
+    /**
+     * 枚举类的说明
+     */
+    private String classDesc = "";
+
+
+    /**
+     * 作者，用于注释
+     */
     public EnumBuilder author(String author) {
         this.author = author;
+        return this;
+    }
+
+    /**
+     * 作者注释，默认@author，也可以自定义@Author
+     */
+    public EnumBuilder authorAnnotation(String authorAnnotation) {
+        this.authorAnnotation = authorAnnotation;
+        return this;
+    }
+
+    /**
+     * 描述注释，默认@description，也可以自定义
+     */
+    public EnumBuilder descAnnotation(String descAnnotation) {
+        this.descAnnotation = descAnnotation;
+        return this;
+    }
+
+    /**
+     * 时间注释，默认datetime，也可以自定义
+     */
+    public EnumBuilder datetimeAnnotation(String datetimeAnnotation) {
+        this.datetimeAnnotation = datetimeAnnotation;
         return this;
     }
 
@@ -78,10 +126,79 @@ public class EnumBuilder {
 
 
     public void print() {
-        validateAllConfig();
-        if (isEmpty(author)) {
-            author = "";
+        System.out.println(createClassInfo());
+        System.out.println();
+        System.out.println();
+        System.out.println();
+
+    }
+
+    /**
+     * 创建对应的java文件，如果存在，重写
+     *
+     * @param projectAbsolutePath 项目的绝对路径，例如：F:\IdeaProjects\common-jkf-util
+     *                            注意：common-jkf-util是项目的位置
+     * @param packageInfo         包路径，例如：com.apache.common
+     */
+    public void rewrite(String projectAbsolutePath, String packageInfo) {
+        write(projectAbsolutePath, packageInfo, true);
+    }
+
+    /**
+     * 创建对应的java文件，如果存在，不重写
+     *
+     * @param projectAbsolutePath 项目的绝对路径，例如：F:\IdeaProjects\common-jkf-util
+     *                            注意：common-jkf-util是项目的位置
+     * @param packageInfo         包路径，例如：com.apache.common
+     */
+    public void write(String projectAbsolutePath, String packageInfo) {
+        write(projectAbsolutePath, packageInfo, false);
+    }
+
+    /**
+     * 创建对应的java文件
+     *
+     * @param projectAbsolutePath 项目的绝对路径，例如：F:\IdeaProjects\common-jkf-util
+     *                            注意：common-jkf-util是项目的位置
+     * @param packageInfo         包路径，例如：com.apache.common
+     * @param rewrite             如果文件存在是否，重写
+     */
+    private void write(String projectAbsolutePath, String packageInfo, boolean rewrite) {
+        //添加package
+        String classInfo = "package " + packageInfo + ";"
+                //换行符
+                + System.getProperty("line.separator")
+                + System.getProperty("line.separator")
+                + createClassInfo();
+        String javaFile = formatClassFile(projectAbsolutePath, packageInfo, className);
+        File file = new File(javaFile);
+        if (file.exists() && !rewrite) {
+            throw new IllegalArgumentException(className + " 已经存在，请查看，具体路径：" + javaFile);
         }
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            fos.write(classInfo.getBytes(StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("创建：" + javaFile + " 成功");
+    }
+
+    /**
+     * 根据项目的绝对路径+包路径，生成java类
+     */
+    private String formatClassFile(String projectAbsolutePath, String packageInfo, String className) {
+        //追加src\main\java，同时包路径转文件路径
+        return projectAbsolutePath +
+                File.separator + "src" + File.separator + "main" + File.separator + "java"
+                + File.separator + packageInfo.replace(".", File.separator)
+                + File.separator + className + ".java";
+    }
+
+    /**
+     * 生成class信息
+     */
+    private String createClassInfo() {
+        validateAllConfig();
         StringBuilder enumSb = new StringBuilder();
         int size = configs.size();
         //组装枚举项
@@ -95,18 +212,25 @@ public class EnumBuilder {
             }
         }
         //组装枚举类
-        String classInfo = EnumTemplateConstant.ENUM_TEMPLATE
+        return EnumTemplateConstant.ENUM_TEMPLATE
+                //描述注释
+                .replaceAll("\\$\\{descriptionAnnotation\\}", this.descAnnotation)
+                //描述
                 .replaceAll("\\$\\{desc\\}", classDesc)
+                //作者注释
+                .replaceAll("\\$\\{authorAnnotation\\}", this.authorAnnotation)
+                //作者
                 .replaceAll("\\$\\{author\\}", author)
+                //时间注释
+                .replaceAll("\\$\\{datetimeAnnotation\\}", this.datetimeAnnotation)
+                //时间
                 .replaceAll("\\$\\{dateTime\\}", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()))
+                //枚举类名称
                 .replaceAll("\\$\\{className\\}", className)
+                //枚举值
                 .replaceAll("\\$\\{enumList\\}", enumSb.toString())
+                //枚举类型
                 .replaceAll("\\$\\{keyType\\}", keyType.getName());
-
-        System.out.println(classInfo);
-        System.out.println();
-        System.out.println();
-        System.out.println();
 
     }
 
