@@ -1,11 +1,11 @@
-package com.jiazhifei.util.enumeration.core;
+package com.jiazhifei.coder.enumeration.base;
 
 /**
+ * 枚举类的code类型
+ *
  * @author jkf
- * @date 2023-01-15 21:52:00
- * @description 枚举类的key类型
  */
-public enum KeyTypeEnum implements KeyTypeFormat {
+public enum CodeTypeEnum implements CodeTypeFormat {
     //Long 类型
     LONG("Long") {
         @Override
@@ -29,7 +29,7 @@ public enum KeyTypeEnum implements KeyTypeFormat {
     };
     private final String name;
 
-    KeyTypeEnum(String name) {
+    CodeTypeEnum(String name) {
         this.name = name;
     }
 
@@ -40,6 +40,3 @@ public enum KeyTypeEnum implements KeyTypeFormat {
 
 }
 
-interface KeyTypeFormat {
-    String format(Object value);
-}
