@@ -46,7 +46,7 @@ public class CoderUtil {
         String rootPath = CoderUtil.class.getResource("/").getPath().substring(1);
         return rootPath.replace("/target/classes",
                 "/src/main/java") +
-                packageInfo.replace(".", File.pathSeparator)
+                packageInfo.replace(".", File.separator)
                 + File.separator + className;
     }
 
