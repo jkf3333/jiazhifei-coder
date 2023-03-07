@@ -1,28 +1,55 @@
-# Coder
 
-通过代码，生成指定的代码模板。
 
-## Enum类自动生成工具
+# Enum自动生成
+效果：自动生成枚举类，通过Enum枚举类模板，自动生成Enum代码。
+地址：https://github.com/jkf3333/common-jiazhifei-coder
+## 背景
+Enum类是经常用到的java类，经常用Enum类就会发现，存在很多共同点和缺陷。
+示例：
 
-### 背景
-可以自动创建标准的Enum类（枚举类）
+```java
+public enum StatusEnum {
+    NORMAL(1, "正常", "用户创建后的默认值");
+    private final Integer code;
+    private final String name;
+    private final String desc;
 
-枚举类的创建过程中，存在如下几个缺陷：
+    StatusEnum(Integer code, String name, String desc) {
+        this.code = code;
+        this.name = name;
+        this.desc = desc;
+    }
+}
+```
+### 共同点
+枚举类的具有共同属性和方法。
+1. 值： private final Integer code; code就是值。
+2. 名称：NORMAL(1,"正常"); 其中“正常”可以认为是名称。
+3. 描述：“用户创建默认值”，也可以作为一个注释。
+4. 根据值获取枚举：根据1获取NORAML。
+5. 值是否属于枚举：1是否是存在StatusEnum枚举中。
 
-1. 枚举类的属性定义不一致，例如：状态枚举，有的定义private Integer code，有的定义private Integer status。
-2. 部分枚举变量没有相关描述说明。
-3. 枚举变量获取值时，返回基本数据类型，而不是包装类型，导致无法使用equals方法。
-4. 当枚举变量与数据库字段关联时，变更枚举变量时，需要通过修改数据库字段说明，比较麻烦。
-5. 部分枚举对象不提供值与枚举之间的转换和比较方法，导致使用比较麻烦。
-
-为了解决上述的缺陷，因此设计枚举类生成工具，同时提高开发效率。
-
+### 缺陷
+实际开发中，为了简单快速，很多枚举类具有不少的缺陷，例如：
+ 1. 使用基础类型，而不是其包装类。例如：private int code，当进行equals比较时，就比较麻烦。
+ 2. 部分枚举类没有“值是否属于枚举”等通用方法。
+ 3. 属性名定义不统一。
+ 4. 部分枚举类对应数据库字段，因此一旦枚举类有变动，需要联动修改数据库的字段注释。
+ 
+## Enum自动生成
+因为Enum枚举类具有类似性，因此可以通过工具，结合java模板，可以自动生成需要的Enum对象。
 ### 示例
+#### pom
 
-具体使用方法，请参考：com.jkf.util.enumeration.EnumExample。
+```
+<dependency>
+  	<groupId>com.jiazhifei</groupId>
+    <artifactId>common-util</artifactId>
+    <version>1.0-SNAPSHOT</version>
+</dependency>
+```
 
-只需要如下使用：
-
+#### 示例
 ```java
 EnumJavaCoder.getInstance()
                 .printJava(EnumConfig
@@ -34,8 +61,7 @@ EnumJavaCoder.getInstance()
                         .packagePath("com.jiazhifei.coder.example")
                         .build("StatusEnum", "状态枚举"));
 ```
-
-即可生成EnvironmentEnum枚举类，具体枚举类效果如下：
+输出：
 
 ```java
 package com.jiazhifei.coder.example;
@@ -129,13 +155,9 @@ public enum StatusEnum {
     }
 }
 
-
 ```
 
-### 下一步
-
-1. EnvironmentEnum并没有实际生成，而是通过控制台数据，需要手动复制，粘贴到指定包路径下即可，因此没有开发自动创建java文件功能，后续会继续补充。
-2. 没有与sql进行互动，例如更新字段时，需要先提供表名和字段的属性，才能生成相关sql，可以根据mysql驱动获取相关的字段属性，后续会补充。
-
-
-
+## 下一步
+1. 自动生成java类：枚举类并没有实际生成，而是通过控制台进行输出，需要手动复制，粘贴，后续会开发自动生成。
+2. 存在枚举类，需要与表中字段的注解进行互动，后续会开发自动sql生成。
+3. 后续开发通用的代码生成，例如：Controller、Service、Dao、Mapper等。
