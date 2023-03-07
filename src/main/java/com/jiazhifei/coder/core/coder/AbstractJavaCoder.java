@@ -41,11 +41,18 @@ public class AbstractJavaCoder<T extends JavaConfig> implements JavaCoder<T> {
         File file = new File(javaPath);
         if (file.exists() && file.isFile()) {
             if (!t.isOverride()) {
-                throw new IllegalArgumentException("java文件已经存在，见：" +
-                        file.getAbsolutePath());
+                throw new IllegalArgumentException("java文件已经存在，javaFile=" +
+                        file.getPath());
+            }
+        } else {
+            file.getParentFile().mkdir();
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                throw new CoderException("创建文件失败，javaFile=" + file.getPath(), e);
             }
         }
-        String javaInfo = buildJava(t);
+        String javaInfo = buildJavaInfo(t);
         try (FileOutputStream fos = new FileOutputStream(file)) {
             fos.write(javaInfo.getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
@@ -124,10 +131,4 @@ public class AbstractJavaCoder<T extends JavaConfig> implements JavaCoder<T> {
         return "";
     }
 
-    /**
-     * 构建java信息
-     */
-    protected String buildJava(T t) {
-        return "";
-    }
 }

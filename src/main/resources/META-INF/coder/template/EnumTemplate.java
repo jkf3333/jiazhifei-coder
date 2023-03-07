@@ -5,8 +5,8 @@ package PACKAGE_PATH;
  *
  * @author AUTHOR
  */
-public enum StatusEnum {
-ENUM_ITEM_LIST
+public enum JAVA_NAME {
+    ENUM_ITEM_LIST
 
     private final KEY_TYPE code;
     private final String name;
@@ -22,9 +22,12 @@ ENUM_ITEM_LIST
 
     /**
      * 根据code获取枚举
+     *
+     * @param code 枚举code
+     * @return 枚举
      */
-    public static StatusEnum parse(KEY_TYPE code) {
-        for (StatusEnum codeEnum : StatusEnum.values()) {
+    public static JAVA_NAME parse(KEY_TYPE code) {
+        for (JAVA_NAME codeEnum : JAVA_NAME.values()) {
             if (codeEnum.getCode().equals(code)) {
                 return codeEnum;
             }
@@ -35,6 +38,7 @@ ENUM_ITEM_LIST
     /**
      * 判断code是否存在
      *
+     * @param code 枚举code
      * @return true=存在
      */
     public static boolean isExist(KEY_TYPE code) {
@@ -43,9 +47,12 @@ ENUM_ITEM_LIST
 
     /**
      * 根据code获取name
+     *
+     * @param code 枚举code
+     * @return 枚举名称
      */
     public static String format(KEY_TYPE code) {
-        StatusEnum codeEnum = parse(code);
+        JAVA_NAME codeEnum = parse(code);
         if (codeEnum == null) {
             return "";
         } else {
@@ -53,7 +60,7 @@ ENUM_ITEM_LIST
         }
     }
 
-    StatusEnum(KEY_TYPE code, String name, String desc) {
+    JAVA_NAME(KEY_TYPE code, String name, String desc) {
         this.name = name;
         this.code = code;
         this.desc = desc;
@@ -78,12 +85,12 @@ ENUM_ITEM_LIST
      */
     public static String toFormatString() {
         StringBuilder sb = new StringBuilder();
-        for (StatusEnum codeEnum : StatusEnum.values()) {
-            sb.append("," + codeEnum.getCode() + "=" + codeEnum.getName());
+        for (JAVA_NAME codeEnum : JAVA_NAME.values()) {
+            sb.append(",").append(codeEnum.getCode()).append("=").append(codeEnum.getName());
             if (codeEnum.getDesc() != null && !"".equals(codeEnum.getDesc())) {
-                sb.append("(" + codeEnum.getDesc() + ")");
+                sb.append("(").append(codeEnum.getDesc()).append(")");
             }
         }
         return "DESC:" + sb.substring(1);
     }
-}
+    }

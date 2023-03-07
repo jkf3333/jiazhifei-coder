@@ -2,8 +2,6 @@ package com.jiazhifei.coder.enumeration;
 
 import com.jiazhifei.coder.enumeration.config.EnumConfig;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 /**
  * @author jkf
@@ -11,16 +9,31 @@ import java.lang.reflect.Method;
  * @description 生成枚举类的样例
  */
 public class EnumExample {
-    public static void main(String[] args) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    public static void main(String[] args) {
         EnumJavaCoder.getInstance()
+                //输出java
                 .printJava(EnumConfig
+                        //Integer枚举
                         .integerBuilder()
-                        .enumConfig("NORMAL", 1, "正常","默认状态")
+                        //字段
+                        .enumConfig("NORMAL", 1, "正常", "默认状态")
                         .enumConfig("DELETE", -1, "删除")
                         .author("jkf")
                         .override(true)
                         .packagePath("com.jiazhifei.coder.example")
                         .build("StatusEnum", "状态枚举"));
+        EnumJavaCoder.getInstance()
+                //输出java
+                .writeJava(EnumConfig
+                        .stringBuilder()
+                        //字段
+                        .enumConfig("DEV", "开发", "开发环境")
+                        .enumConfig("TEST", "测试", "测试环境")
+                        .enumConfig("PRE", "预发", "预发环境")
+                        .author("jkf")
+                        .override(true)
+                        .packagePath("com.jiazhifei.coder.example")
+                        .build("EnvironmentEnum", "环境枚举"));
     }
 
 //    private static void printClassInfo(Class cla) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {

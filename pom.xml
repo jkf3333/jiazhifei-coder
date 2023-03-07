@@ -5,9 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.jiazhifei</groupId>
-    <artifactId>common-util</artifactId>
+    <artifactId>jiazhifei-coder</artifactId>
     <version>1.0-SNAPSHOT</version>
-
+    <description>
+        个人的coder工具，主要是根据模板自动生成相关的java类，
+        例如：设计Controller的通用模板，针对模板中的参数进行自定义替换，提高代码效率。
+        与市面的其他coder，采用简单的模板设计。
+    </description>
+    <url>https://github.com/jkf3333/common-jiazhifei-coder</url>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
@@ -24,5 +29,15 @@
             <version>5.8.12</version>
         </dependency>
     </dependencies>
+    <build>
+        <finalName>${project.artifactId}-${project.version}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.1.0</version>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

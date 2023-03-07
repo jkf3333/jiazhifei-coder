@@ -15,7 +15,7 @@ public class EnumItemFormatter extends AbstractFormatter<EnumConfig> {
     /**
      * 枚举类的模板
      */
-    private static final String ENUM_LINE_TEMPLATE = "    %s(%s, \"%s\", \"%s\")";
+    private static final String ENUM_LINE_TEMPLATE = "%s(%s, \"%s\", \"%s\")";
 
     @Override
     public String support() {
@@ -34,6 +34,9 @@ public class EnumItemFormatter extends AbstractFormatter<EnumConfig> {
                     item.getKeyType().format(item.getCode()),
                     item.getName(),
                     item.getDesc());
+            if (i != 0) {
+                sb.append("    ");
+            }
             if (i == size - 1) {
                 //最后一行
                 sb.append(itemStr).append(";");

@@ -47,7 +47,7 @@ public class CoderUtil {
         return rootPath.replace("/target/classes",
                 "/src/main/java") +
                 packageInfo.replace(".", File.separator)
-                + File.separator + className;
+                + File.separator + className + ".java";
     }
 
     /**
