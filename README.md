@@ -2,6 +2,7 @@
 
 # Enum自动生成
 效果：自动生成枚举类，通过Enum枚举类模板，自动生成Enum代码。
+
 地址：https://github.com/jkf3333/common-jiazhifei-coder
 ## 背景
 Enum类是经常用到的java类，经常用Enum类就会发现，存在很多共同点和缺陷。
