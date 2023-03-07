@@ -42,9 +42,9 @@ public enum StatusEnum {
 ### 示例
 #### pom
 
-```
+```xml
 <dependency>
-  	<groupId>com.jiazhifei</groupId>
+    <groupId>com.jiazhifei</groupId>
     <artifactId>common-util</artifactId>
     <version>1.0-SNAPSHOT</version>
 </dependency>
