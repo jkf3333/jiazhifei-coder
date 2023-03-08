@@ -1,7 +1,8 @@
 package com.jiazhifei.coder.core.coder;
 
-import com.jiazhifei.coder.core.CoderUtil;
+import com.jiazhifei.coder.core.util.CoderUtil;
 import com.jiazhifei.coder.core.config.JavaConfig;
+import com.jiazhifei.coder.core.util.FileUtil;
 
 import java.io.InputStream;
 
@@ -30,7 +31,7 @@ public class ClassPathFileTemplateJavaCoder<T extends JavaConfig> extends Abstra
      */
     public ClassPathFileTemplateJavaCoder(String templateFilePath) {
         //移除class path
-        templateFilePath = CoderUtil.removeClassPath(templateFilePath);
+        templateFilePath = FileUtil.removeClassPath(templateFilePath);
 
         this.templateFilePath = templateFilePath;
     }

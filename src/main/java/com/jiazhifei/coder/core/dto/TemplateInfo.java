@@ -1,6 +1,6 @@
 package com.jiazhifei.coder.core.dto;
 
-import com.jiazhifei.coder.core.CoderUtil;
+import com.jiazhifei.coder.core.util.CoderUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;

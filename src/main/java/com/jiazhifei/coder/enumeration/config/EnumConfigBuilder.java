@@ -1,6 +1,6 @@
 package com.jiazhifei.coder.enumeration.config;
 
-import com.jiazhifei.coder.core.CoderUtil;
+import com.jiazhifei.coder.core.util.CoderUtil;
 import com.jiazhifei.coder.enumeration.base.CodeTypeEnum;
 
 import java.util.ArrayList;

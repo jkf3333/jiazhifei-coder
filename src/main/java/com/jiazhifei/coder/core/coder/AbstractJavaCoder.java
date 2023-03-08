@@ -1,10 +1,11 @@
 package com.jiazhifei.coder.core.coder;
 
-import com.jiazhifei.coder.core.CoderUtil;
 import com.jiazhifei.coder.core.config.JavaConfig;
 import com.jiazhifei.coder.core.dto.TemplateInfo;
 import com.jiazhifei.coder.core.exception.CoderException;
 import com.jiazhifei.coder.core.formater.*;
+import com.jiazhifei.coder.core.util.CoderUtil;
+import com.jiazhifei.coder.core.util.FileUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -37,7 +38,7 @@ public class AbstractJavaCoder<T extends JavaConfig> implements JavaCoder<T> {
 
     @Override
     public String writeJava(T t) {
-        String javaPath = CoderUtil.javaProjectPath(t.getPackagePath(), t.getJavaName());
+        String javaPath = FileUtil.javaProjectPath(t.getPackagePath(), t.getJavaName());
         File file = new File(javaPath);
         if (file.exists() && file.isFile()) {
             if (!t.isOverride()) {
