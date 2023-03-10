@@ -45,7 +45,7 @@ public enum StatusEnum {
 ```xml
 <dependency>
     <groupId>com.jiazhifei</groupId>
-    <artifactId>common-util</artifactId>
+    <artifactId>jiazhifei-coder</artifactId>
     <version>1.0-SNAPSHOT</version>
 </dependency>
 ```
