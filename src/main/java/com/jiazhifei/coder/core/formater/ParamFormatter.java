@@ -1,6 +1,7 @@
 package com.jiazhifei.coder.core.formater;
 
 import com.jiazhifei.coder.core.config.JavaConfig;
+import com.jiazhifei.coder.core.util.CoderUtil;
 
 /**
  * @author jkf
@@ -9,11 +10,25 @@ import com.jiazhifei.coder.core.config.JavaConfig;
  */
 public interface ParamFormatter<T extends JavaConfig> {
     /**
-     * 支持的参数
-     *
-     * @return 参数，例如：name
+     * 参数的占位符
      */
-    String support();
+    String PARAM_PLACEHOLDER = "$";
+
+    /**
+     * 支持的参数，前后必须带有$$，这样可以提取参数
+     *
+     * @return 参数，例如：$name$
+     */
+    default String support() {
+        return CoderUtil.addPlaceholder(param());
+    }
+
+    /**
+     * 返回参数
+     *
+     * @return 支持的参数，例如:name
+     */
+    String param();
 
     /**
      * 根据配置信息，返回参数的替代
@@ -23,14 +38,5 @@ public interface ParamFormatter<T extends JavaConfig> {
      */
     String parse(T t);
 
-    /**
-     * 判断模板信息，是否包含待转换的参数
-     *
-     * @param templateInfo 模板信息，
-     *                     例如：support=AUTHOR，
-     *                     如果templateInfo=你好AUTHOR
-     *                     返回true
-     * @return true=包含
-     */
-    boolean hasParam(String templateInfo);
+
 }

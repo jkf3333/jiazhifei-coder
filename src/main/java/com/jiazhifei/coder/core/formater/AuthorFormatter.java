@@ -7,9 +7,10 @@ import com.jiazhifei.coder.core.config.JavaConfig;
  *
  * @author jkf
  */
-public class AuthorFormatter<T extends JavaConfig> extends AbstractFormatter<T> {
+public class AuthorFormatter<T extends JavaConfig> implements ParamFormatter<T> {
+
     @Override
-    public String support() {
+    public String param() {
         return "AUTHOR";
     }
 

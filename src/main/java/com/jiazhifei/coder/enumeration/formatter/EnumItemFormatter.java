@@ -1,6 +1,6 @@
 package com.jiazhifei.coder.enumeration.formatter;
 
-import com.jiazhifei.coder.core.formater.AbstractFormatter;
+import com.jiazhifei.coder.core.formater.ParamFormatter;
 import com.jiazhifei.coder.enumeration.config.EnumConfig;
 import com.jiazhifei.coder.enumeration.config.EnumItemConfig;
 
@@ -11,14 +11,14 @@ import java.util.List;
  *
  * @author jkf
  */
-public class EnumItemFormatter extends AbstractFormatter<EnumConfig> {
+public class EnumItemFormatter implements ParamFormatter<EnumConfig> {
     /**
      * 枚举类的模板
      */
     private static final String ENUM_LINE_TEMPLATE = "%s(%s, \"%s\", \"%s\")";
 
     @Override
-    public String support() {
+    public String param() {
         return "ENUM_ITEM_LIST";
     }
 

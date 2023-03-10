@@ -6,7 +6,7 @@
 
     <groupId>com.jiazhifei</groupId>
     <artifactId>jiazhifei-coder</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
     <description>
         个人的coder工具，主要是根据模板自动生成相关的java类，
         例如：设计Controller的通用模板，针对模板中的参数进行自定义替换，提高代码效率。
@@ -17,18 +17,6 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
-    <dependencies>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.11</version>
-        </dependency>
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
-            <version>5.8.12</version>
-        </dependency>
-    </dependencies>
     <build>
         <finalName>${project.artifactId}-${project.version}</finalName>
         <plugins>

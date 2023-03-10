@@ -10,4 +10,15 @@ public class CoderException extends RuntimeException {
         super(message, e);
     }
 
+    public CoderException(String message) {
+        super(message);
+    }
+
+    public static CoderException error(String message) {
+        return new CoderException(message);
+    }
+
+    public static CoderException error(String message, Exception e) {
+        return new CoderException(message, e);
+    }
 }

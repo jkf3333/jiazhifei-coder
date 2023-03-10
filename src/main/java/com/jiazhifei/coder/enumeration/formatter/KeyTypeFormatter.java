@@ -1,19 +1,17 @@
 package com.jiazhifei.coder.enumeration.formatter;
 
-import com.jiazhifei.coder.core.formater.AbstractFormatter;
+import com.jiazhifei.coder.core.formater.ParamFormatter;
 import com.jiazhifei.coder.enumeration.config.EnumConfig;
-import com.jiazhifei.coder.enumeration.config.EnumItemConfig;
-
-import java.util.List;
 
 /**
  * 解决KEY_TYPE
+ *
  * @author jkf
  */
-public class KeyTypeFormatter extends AbstractFormatter<EnumConfig> {
+public class KeyTypeFormatter implements ParamFormatter<EnumConfig> {
 
     @Override
-    public String support() {
+    public String param() {
         return "KEY_TYPE";
     }
 

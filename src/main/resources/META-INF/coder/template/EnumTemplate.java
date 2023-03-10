@@ -1,14 +1,14 @@
-package PACKAGE_PATH;
+package $PACKAGE_PATH$;
 
 /**
- * DESC
+ * $DESC$
  *
- * @author AUTHOR
+ * @author $AUTHOR$
  */
-public enum JAVA_NAME {
-    ENUM_ITEM_LIST
+public enum $JAVA_NAME$ {
+    $ENUM_ITEM_LIST$
 
-    private final KEY_TYPE code;
+    private final $KEY_TYPE$ code;
     private final String name;
     private final String desc;
 
@@ -26,8 +26,8 @@ public enum JAVA_NAME {
      * @param code 枚举code
      * @return 枚举
      */
-    public static JAVA_NAME parse(KEY_TYPE code) {
-        for (JAVA_NAME codeEnum : JAVA_NAME.values()) {
+    public static $JAVA_NAME$ parse($KEY_TYPE$ code) {
+        for ($JAVA_NAME$ codeEnum : $JAVA_NAME$.values()) {
             if (codeEnum.getCode().equals(code)) {
                 return codeEnum;
             }
@@ -41,7 +41,7 @@ public enum JAVA_NAME {
      * @param code 枚举code
      * @return true=存在
      */
-    public static boolean isExist(KEY_TYPE code) {
+    public static boolean isExist($KEY_TYPE$ code) {
         return parse(code) != null;
     }
 
@@ -51,8 +51,8 @@ public enum JAVA_NAME {
      * @param code 枚举code
      * @return 枚举名称
      */
-    public static String format(KEY_TYPE code) {
-        JAVA_NAME codeEnum = parse(code);
+    public static String format($KEY_TYPE$ code) {
+        $JAVA_NAME$ codeEnum = parse(code);
         if (codeEnum == null) {
             return "";
         } else {
@@ -60,13 +60,13 @@ public enum JAVA_NAME {
         }
     }
 
-    JAVA_NAME(KEY_TYPE code, String name, String desc) {
+    $JAVA_NAME$($KEY_TYPE$ code, String name, String desc) {
         this.name = name;
         this.code = code;
         this.desc = desc;
     }
 
-    public KEY_TYPE getCode() {
+    public $KEY_TYPE$ getCode() {
         return code;
     }
 
@@ -85,12 +85,12 @@ public enum JAVA_NAME {
      */
     public static String toFormatString() {
         StringBuilder sb = new StringBuilder();
-        for (JAVA_NAME codeEnum : JAVA_NAME.values()) {
+        for ($JAVA_NAME$ codeEnum : $JAVA_NAME$.values()) {
             sb.append(",").append(codeEnum.getCode()).append("=").append(codeEnum.getName());
             if (codeEnum.getDesc() != null && !"".equals(codeEnum.getDesc())) {
                 sb.append("(").append(codeEnum.getDesc()).append(")");
             }
         }
-        return "DESC:" + sb.substring(1);
+        return "$DESC$:" + sb.substring(1);
     }
-    }
+}

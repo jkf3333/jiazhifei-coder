@@ -37,7 +37,7 @@ public class FileUtil {
         String rootPath = CoderUtil.class.getResource("/").getPath().substring(1);
         boolean notNeedJavaSuffix = javaName.endsWith(JAVA_FILE_SUFFIX) || javaName.endsWith(JAVA_FILE_SUFFIX.toUpperCase(Locale.ROOT));
         if (!notNeedJavaSuffix) {
-            javaName += javaName + JAVA_FILE_SUFFIX;
+            javaName += JAVA_FILE_SUFFIX;
         }
         return rootPath.replace(TARGET_PATH,
                 SRC_PATH) +

@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 抽象coder，定义coder的相关模板方法，供子类重写
@@ -79,33 +81,70 @@ public class AbstractJavaCoder<T extends JavaConfig> implements JavaCoder<T> {
         if (CoderUtil.isEmpty(formatters)) {
             return info.getTemplateInfo();
         }
+        Map<String, ParamFormatter> formatterMap = formatters.stream().collect(Collectors.toMap(dto -> dto.support(), dto -> dto));
+        validateFormatter(formatters);
         //替换模板参数
-        replaceParam(0, info, t, formatters);
+        replaceParam(0, info, t, formatterMap);
         return info.getTemplateInfo();
+    }
+
+    /**
+     * 校验formatter的参数
+     */
+    private void validateFormatter(List<ParamFormatter> formatters) {
+        for (ParamFormatter formatter : formatters) {
+            String param = formatter.support();
+            boolean hasPlaceholder = param.startsWith(ParamFormatter.PARAM_PLACEHOLDER) && param.endsWith(ParamFormatter.PARAM_PLACEHOLDER);
+            if (!hasPlaceholder) {
+                throw new CoderException("formatter支持的参数没有添加占位符,param=" + formatter.support() +
+                        ",class=" + formatter.getClass().getName());
+            }
+            param = CoderUtil.removePlaceholder(param);
+            if (param.contains(ParamFormatter.PARAM_PLACEHOLDER)) {
+                throw new CoderException("formatter支持的参数不能带有添加占位符" + ParamFormatter.PARAM_PLACEHOLDER + ",param=" + formatter.support() +
+                        ",class=" + formatter.getClass().getName());
+            }
+        }
     }
 
     private void replaceParam(int repeatNum,
                               TemplateInfo info,
                               T t,
-                              List<ParamFormatter> formatters) {
+                              Map<String, ParamFormatter> formatterMap) {
         if (repeatNum > REPLACE_MAX_NUM) {
             throw new IllegalArgumentException("存在可能循环参数生成，请检查formatter之间是否生成循环参数");
         }
         repeatNum++;
-        for (ParamFormatter formatter : formatters) {
-            if (formatter.hasParam(info.getTemplateInfo())) {
-                info.replaceParam(formatter.support(), formatter.parse(t));
+        List<String> paramList = info.drawParam();
+        if (CoderUtil.isEmpty(paramList)) {
+            return;
+        }
+        for (String param : paramList) {
+            ParamFormatter formatter = formatterMap.get(param);
+            String parse = "";
+            if (formatter != null) {
+                //formatter不存在，默认直接替换
+                parse = formatter.parse(t);
             }
+            info.replaceParam(param, parse);
+
         }
-        boolean hasParam = false;
-        for (ParamFormatter formatter : formatters) {
-            if (formatter.hasParam(info.getTemplateInfo())) {
-                hasParam = true;
-            }
-        }
-        if (hasParam) {
-            replaceParam(repeatNum, info, t, formatters);
-        }
+
+
+//        for (ParamFormatter formatter : formatters) {
+//            if (formatter.hasParam(info.getTemplateInfo())) {
+//                info.replaceParam(formatter.support(), formatter.parse(t));
+//            }
+//        }
+//        boolean hasParam = false;
+//        for (ParamFormatter formatter : formatters) {
+//            if (formatter.hasParam(info.getTemplateInfo())) {
+//                hasParam = true;
+//            }
+//        }
+//        if (hasParam) {
+//            replaceParam(repeatNum, info, t, formatters);
+//        }
 
     }
 

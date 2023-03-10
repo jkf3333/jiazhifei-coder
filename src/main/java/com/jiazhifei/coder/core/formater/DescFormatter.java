@@ -7,9 +7,10 @@ import com.jiazhifei.coder.core.config.JavaConfig;
  *
  * @author jkf
  */
-public class DescFormatter<T extends JavaConfig> extends AbstractFormatter<T>  {
+public class DescFormatter<T extends JavaConfig> implements ParamFormatter<T> {
+
     @Override
-    public String support() {
+    public String param() {
         return "DESC";
     }
 
